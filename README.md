@@ -1,319 +1,174 @@
-PRD for reference, no feedback expected from chatgpt yet.
+# OpenChat — Product Requirements Document (PRD)
 
-OpenChat - Product Requirements Document (PRD)
+> Real-time public chat rooms with message persistence, Firebase authentication, and cloud deployment.
 
-1. Project Overview
+## 1. Project Overview
 
-Project Name
+| Field | Description |
+| --- | --- |
+| Project Name | OpenChat – Real-Time Public Chat Rooms |
+| Project Type | Mini Project / Proof of Concept (POC) |
+| Objective | Build a real-time public group chat application using Node.js, Express.js, Socket.IO, MongoDB, and Vanilla JavaScript. |
+| Expected Outcome | A fully working chat app, GitHub repository, live deployment, and practical backend development experience. |
 
-OpenChat – Real-Time Public Chat Rooms
+### Expected Student Outcomes
 
-Project Type
-
-Mini Project / Proof of Concept (POC)
-
-Objective
-
-Build a real-time public group chat application using Node.js, Express.js, Socket.IO, MongoDB and Vanilla JavaScript. The project is designed to help students understand how modern web applications are planned, developed, deployed and demonstrated.
-
-Expected Outcome
-
-At the end of this project, every student should have:
-
-- A fully working real-time chat application
-- A public GitHub repository
-- A live deployed application
-- Hands-on experience with modern backend development concepts
+- Fully working real-time chat application
+- Public GitHub repository
+- Live deployed application
+- Hands-on experience with backend concepts
 
 ---
 
-2. Scope
+## 2. Scope
 
-In Scope
+### In Scope
 
-- Public Chat Rooms
-- Real-Time Messaging
-- Message Persistence
-- Online Users
-- Join / Leave Notifications
-- Firebase Authentication
-- Cloud Deployment
+- Public chat rooms
+- Real-time messaging
+- Message persistence
+- Online user presence
+- Join / leave notifications
+- Firebase authentication
+- Cloud deployment
 
-Out of Scope
+### Out of Scope
 
-- Private Messaging
-- Voice/Video Calling
-- File Sharing
-- Message Encryption
-- Admin Panel
+- Private messaging
+- Voice/video calling
+- File sharing
+- Message encryption
+- Admin panel
 
 ---
 
-3. Learning Objectives
+## 3. Learning Objectives
 
 Students will gain practical experience with:
 
-- HTML5
-- CSS3
-- Bootstrap / Tailwind CSS
-- Vanilla JavaScript
-- Express.js
-- REST APIs
-- Socket.IO
-- MongoDB
-- Mongoose
-- Firebase Authentication
-- Firebase Hosting
-- Render Deployment
-- Git & GitHub
-- Environment Variables
-- Real-Time Communication
-- Cloud Deployment
+- HTML5, CSS3, Bootstrap / Tailwind CSS, Vanilla JavaScript
+- Express.js, REST APIs, Socket.IO
+- MongoDB, Mongoose
+- Firebase Authentication and Firebase Hosting
+- Render deployment
+- Git, GitHub, and environment variables
+- Real-time communication and cloud deployment
 
 ---
 
-4. Technology Stack
+## 4. Technology Stack
 
-Frontend
-
-- HTML5
-- CSS3
-- Bootstrap or Tailwind CSS
-- Vanilla JavaScript
-
-Backend
-
-- Node.js
-- Express.js
-- Socket.IO
-
-Database
-
-- MongoDB Atlas
-- Mongoose
-
-Authentication
-
-- Firebase Authentication
-  - Email & Password Sign Up
-  - Login
-  - Logout
-
-Hosting
-
-Frontend
-
-- Firebase Hosting
-
-Backend
-
-- Render
-
-Version Control
-
-- Git
-- GitHub
+| Layer | Technologies |
+| --- | --- |
+| Frontend | HTML5, CSS3, Bootstrap or Tailwind CSS, Vanilla JavaScript |
+| Backend | Node.js, Express.js, Socket.IO |
+| Database | MongoDB Atlas, Mongoose |
+| Authentication | Firebase Authentication (Email & Password Sign Up, Login, Logout) |
+| Hosting | Firebase Hosting (frontend), Render (backend) |
+| Version Control | Git, GitHub |
 
 ---
 
-5. Core Functionalities
+## 5. Core Functionalities
 
-Guest Mode
+### Guest Mode
 
 - Join any public room
-- Enter display name
-- Start chatting
+- Enter a display name
+- Start chatting instantly
 
-Authenticated Mode
+### Authenticated Mode
 
-- Sign Up
+- Sign up
 - Login
 - Logout
 - Display authenticated user information
 
-Chat Features
+### Chat Features
 
-- Create / Join Room
-- Real-Time Messaging
-- Message History
-- Online Users
-- Join Notification
-- Leave Notification
+- Create / join room
+- Real-time messaging
+- Message history loading
+- Online users list
+- Join notification
+- Leave notification
 
-Stretch Features
+### Stretch Features
 
-- Typing Indicator
-- Emoji Support
-- Dark Mode
-- Responsive Design
-
----
-
-6. Database Design
-
-Rooms Collection
-
-- _id
-- roomName
-- createdAt
-
-Messages Collection
-
-- _id
-- roomId
-- username
-- firebaseUid (optional)
-- message
-- createdAt
+- Typing indicator
+- Emoji support
+- Dark mode
+- Responsive design
 
 ---
 
-7. API Summary
+## 6. Database Design
 
-REST APIs
-
-- Create Room
-- Join Room
-- Get Message History
-
-Socket.IO Events
-
-- Join Room
-- Send Message
-- Receive Message
-- User Joined
-- User Left
-- Typing
-- Stop Typing
+| Collection | Fields | Notes |
+| --- | --- | --- |
+| `rooms` | `_id`, `roomName`, `createdAt` | Stores room metadata and creation timestamp |
+| `messages` | `_id`, `roomId`, `username`, `firebaseUid` (optional), `message`, `createdAt` | Stores chat history per room |
 
 ---
 
-8. Project Milestones
+## 7. API Summary
 
-Milestone 1 — Foundation
+### REST APIs
 
-Objective
+| Endpoint | Purpose |
+| --- | --- |
+| Create Room | Create a new chat room |
+| Join Room | Add a user to a room |
+| Get Message History | Load room messages |
 
-Set up the project structure and create the basic user interface.
+### Socket.IO Events
 
-Deliverables
-
-- Git Repository
-- Express Server
-- Basic HTML UI
-- Join Room Screen
-- Folder Structure
-
-Working Milestone
-
-Users can open the application and access the Join Room page.
-
-Concepts Covered
-
-- Express.js
-- Static Files
-- Bootstrap / Tailwind
-- Git
-- GitHub
+| Event | Purpose |
+| --- | --- |
+| `join-room` | User joins a room |
+| `send-message` | User sends a chat message |
+| `receive-message` | Broadcast message to room members |
+| `user-joined` | Notify when a user enters |
+| `user-left` | Notify when a user leaves |
+| `typing` | Indicate a user is typing |
+| `stop-typing` | Indicate typing has stopped |
 
 ---
 
-Milestone 2 — Database Integration
+## 8. Project Milestones
 
-Objective
+| Milestone | Goal | Deliverables | Outcome |
+| --- | --- | --- | --- |
+| 1 — Foundation | Set up project structure and UI | Git repository, Express server, HTML UI, join room screen, folder structure | Users can open the app and access join room page |
+| 2 — Database Integration | Connect MongoDB and store chat data | MongoDB Atlas connection, room management, store messages, load previous messages | Users can join a room and view stored history |
+| 3 — Real-Time Chat | Implement live communication | Socket.IO server/client, live messaging, join/leave notifications, online users | Multiple users can chat in real time |
+| 4 — Authentication & Deployment | Secure app and deploy to cloud | Firebase Authentication, sign up/login/logout, Firebase Hosting, Render backend deployment | Users can authenticate and use deployed app |
 
-Connect the application to MongoDB and store chat data.
+### Milestone Concepts
 
-Deliverables
-
-- MongoDB Atlas Connection
-- Room Management
-- Store Messages
-- Load Previous Messages
-
-Working Milestone
-
-Users can join a room and view previous chat messages stored in the database.
-
-Concepts Covered
-
-- MongoDB
-- Mongoose
-- CRUD Operations
-- REST APIs
+- Milestone 1: Express.js, static files, Bootstrap / Tailwind, Git, GitHub
+- Milestone 2: MongoDB, Mongoose, CRUD operations, REST APIs
+- Milestone 3: WebSockets, event-driven programming, real-time communication
+- Milestone 4: Firebase Authentication, user identity, environment variables, cloud deployment, production configuration
 
 ---
 
-Milestone 3 — Real-Time Chat
+## 9. Final Deliverables
 
-Objective
+Students should submit:
 
-Implement live communication using Socket.IO.
-
-Deliverables
-
-- Socket.IO Server
-- Socket.IO Client
-- Live Messaging
-- Join / Leave Notifications
-- Online Users
-
-Working Milestone
-
-Two or more users can communicate in real time from different browser windows or devices.
-
-Concepts Covered
-
-- WebSockets
-- Event-Driven Programming
-- Real-Time Communication
-
----
-
-Milestone 4 — Authentication & Deployment
-
-Objective
-
-Secure the application and deploy it to the cloud.
-
-Deliverables
-
-- Firebase Authentication
-- Sign Up
-- Login
-- Logout
-- Firebase Hosting (Frontend)
-- Render Deployment (Backend)
-
-Working Milestone
-
-Users can create an account, log in, access the chat application and use the live deployed version.
-
-Concepts Covered
-
-- Firebase Authentication
-- User Identity
-- Environment Variables
-- Cloud Deployment
-- Production Configuration
-
----
-
-9. Final Deliverables
-
-Each student should submit:
-
-- GitHub Repository
-- Live Project URL
-- Source Code
+- GitHub repository
+- Live project URL
+- Source code
 - README
-- Project Screenshots
-- Short Demo Video (Optional)
+- Project screenshots
+- Short demo video (optional)
 
 ---
 
-10. Project Architecture
+## 10. Project Architecture
 
+```text
 HTML + Bootstrap / Tailwind
             │
             ▼
@@ -332,10 +187,11 @@ MongoDB Atlas   Firebase Authentication
             ▼
 Frontend → Firebase Hosting
 Backend  → Render
+```
 
 ---
 
-11. Learning Outcomes
+## 11. Learning Outcomes
 
 By the end of this project, students will understand:
 
