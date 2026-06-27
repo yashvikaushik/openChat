@@ -1,7 +1,7 @@
-import { 
-  getSessionItem, 
-  setSessionItem, 
-  formatTime, 
+import {
+  getSessionItem,
+  setSessionItem,
+  formatTime,
   showToast,
   validateRoomName
 } from './common.js';
@@ -29,14 +29,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const messagesPanel = document.getElementById('messages-panel');
   const chatForm = document.getElementById('chat-form');
   const messageInput = document.getElementById('message-input');
-  
+
   // Dialog Elements
   const createRoomTrigger = document.getElementById('btn-create-room-trigger');
   const roomDialog = document.getElementById('room-dialog');
   const dialogCreateForm = document.getElementById('dialog-create-form');
   const dialogRoomNameInput = document.getElementById('dialog-room-name');
   const btnDialogCancel = document.getElementById('btn-dialog-cancel');
-  
+
   const btnLeave = document.getElementById('btn-leave');
   const btnMute = document.getElementById('btn-mute');
 
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load chat room message history
   function loadRoomHistory(roomName) {
     messagesPanel.innerHTML = '';
-    
+
     // Set Header titles
     activeRoomTitle.textContent = `# ${roomName}`;
     const onlineCount = roomOnlineCounts[roomName] || 1;
@@ -123,9 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderMessage(sender, text, time, isOwn = false) {
     const msgDiv = document.createElement('div');
     msgDiv.className = `message-item ${isOwn ? 'own-message' : ''}`;
-    
+
     const initials = getInitials(sender);
-    
+
     msgDiv.innerHTML = `
       <div class="message-avatar">${initials}</div>
       <div class="message-content-wrapper">
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="message-body">${text}</div>
       </div>
     `;
-    
+
     messagesPanel.appendChild(msgDiv);
   }
 
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function selectRoom(roomName) {
     activeRoom = roomName;
     setSessionItem('room', roomName);
-    
+
     // Highlight sidebar list
     const items = roomsListContainer.querySelectorAll('.room-nav-item');
     items.forEach(btn => {
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Render immediately
     renderMessage(username, text, timeString, true);
-    
+
     // 2. Add to active room history log
     if (!chatHistory[activeRoom]) {
       chatHistory[activeRoom] = [];
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Close Dialog
     roomDialog.close();
     dialogRoomNameInput.value = '';
-    
+
     // Select new room
     selectRoom(newName);
     showToast('Room Created', `Joined room #${newName}!`, 'success');
@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
       showToast('Leaving...', 'Redirecting back to home.', 'success');
       setTimeout(() => {
         window.location.href = 'index.html';
-      }, 500);
+      }, 1000);
     }
   });
 
