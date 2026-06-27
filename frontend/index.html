@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenChat — Join a Chat Room</title>
+  <meta name="description" content="Enter a display name and select a public room to chat in real time.">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/join-room.css">
+</head>
+<body>
+  <!-- Decorative background wave blobs -->
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+
+  <div class="page-container">
+    <!-- Header -->
+    <header class="main-header">
+      <div class="logo-area">
+        <img class="app-logo" src="images/logo.png" alt="OpenChat Snail Logo">
+        <h1 class="app-title">OpenChat</h1>
+      </div>
+      <button type="button" class="mode-badge" id="btn-mode">
+        <span class="badge-icon">👤</span> Guest Mode
+      </button>
+    </header>
+
+    <!-- Main Join Box -->
+    <main class="join-box">
+      <div class="join-header">
+        <div class="bubble-icon-container">
+          <svg class="bubble-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
+          </svg>
+        </div>
+        <h2>Join a Chat Room</h2>
+        <p>Enter your details and join the conversation</p>
+      </div>
+
+      <form id="join-form" class="join-form" novalidate>
+        <!-- Display Name Field -->
+        <div class="form-group">
+          <label for="display-name" class="field-label">
+            <span class="label-icon">👤</span> Display Name
+          </label>
+          <div class="input-wrapper">
+            <input 
+              type="text" 
+              id="display-name" 
+              name="displayName" 
+              placeholder="Enter your display name" 
+              required 
+              minlength="3" 
+              maxlength="20"
+              autocomplete="off"
+            >
+          </div>
+          <span class="field-hint" id="name-hint">3–20 characters</span>
+        </div>
+
+        <!-- Available Rooms Selection -->
+        <div class="form-group">
+          <label class="field-label">
+            <span class="label-icon">#</span> Available Rooms
+          </label>
+          
+          <div class="rooms-radio-group">
+            <label class="room-radio-option">
+              <input type="radio" name="roomSelect" value="General" checked>
+              <div class="room-radio-content">
+                <span class="room-name"># General</span>
+                <span class="online-tag green-tag">12 online</span>
+              </div>
+            </label>
+
+            <label class="room-radio-option">
+              <input type="radio" name="roomSelect" value="JavaScript">
+              <div class="room-radio-content">
+                <span class="room-name"># JavaScript</span>
+                <span class="online-tag green-tag">8 online</span>
+              </div>
+            </label>
+
+            <label class="room-radio-option">
+              <input type="radio" name="roomSelect" value="Movies">
+              <div class="room-radio-content">
+                <span class="room-name"># Movies</span>
+                <span class="online-tag green-tag">5 online</span>
+              </div>
+            </label>
+
+            <label class="room-radio-option">
+              <input type="radio" name="roomSelect" value="Sports">
+              <div class="room-radio-content">
+                <span class="room-name"># Sports</span>
+                <span class="online-tag green-tag">7 online</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- OR Divider -->
+        <div class="or-divider">
+          <span class="or-text">OR</span>
+        </div>
+
+        <!-- Create New Room Field -->
+        <div class="form-group">
+          <label for="new-room-name" class="field-label">
+            <span class="label-icon">#</span> Create New Room
+          </label>
+          <div class="input-wrapper">
+            <input 
+              type="text" 
+              id="new-room-name" 
+              name="newRoomName" 
+              placeholder="Enter new room name (e.g. music, travel)" 
+              minlength="3" 
+              maxlength="30"
+              autocomplete="off"
+            >
+          </div>
+          <span class="field-hint">No spaces at start or end. 3–30 characters.</span>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-join" id="btn-submit">
+          Join Room
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4v3z"/>
+          </svg>
+        </button>
+      </form>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+      <p>🛡️ OpenChat is a public chat platform. Be respectful and follow community guidelines.</p>
+    </footer>
+  </div>
+
+  <script type="module" src="js/common.js"></script>
+  <script type="module" src="js/join-room.js"></script>
+</body>
+</html>
