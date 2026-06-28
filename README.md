@@ -203,3 +203,26 @@ By the end of this project, students will understand:
 - How to deploy a full-stack application
 - How to use Git and GitHub in a real project
 - How to present a portfolio-ready project during interviews
+
+---
+
+## 12. Implementation Progress
+
+### Milestone 1: Foundation (Completed)
+We have successfully implemented the full-stack foundation, frontend layouts, and local interactive behaviors.
+
+#### Requirement Summary
+- **Guest Mode Join Page**: Constructed a landing page for users to register their display name and select an active chat room (General, JavaScript, Movies, Sports) or specify a custom one.
+- **Input Validation**: Configured strict client-side validation rules checking name constraints (3–20 characters) and custom room names (3–30 characters, no leading/trailing spaces) before submission.
+- **Session Persistence**: Utilized `sessionStorage` to save user profiles and transfer session data to the active chat screen.
+- **Chat Dashboard**: Created a two-column layout including room selection lists, system notifications, scrollable message logs, dynamic avatars, and interactive chat inputs.
+
+#### Technical Details
+- **Architecture**: Separated into a `frontend` folder containing HTML, CSS, and modular ES6 JavaScript, and a `backend` folder containing the Express server.
+- **Styling Design**: Built a theme-adaptable styling library (`common.css`, `join-room.css`, `chat.css`) using CSS design tokens, flexbox/grid layout systems, glassmorphism filters, custom scrollbars, and slide-in notifications.
+- **Script Controllers**: 
+  - `common.js`: Reusable helper modules for notifications, validation logic, and storage.
+  - `join-room.js`: Toggles radio selections, mutes predefined fields when creating custom rooms, and controls form redirection.
+  - `chat.js`: Populates message cards, handles dynamic auto-expanding inputs, submits local messages, triggers auto-scrolling, and loads room-specific mock history.
+- **Web Server**: Express app in `server.js` configured with nodemon for hot-reloading and static file serving on port `3000`.
+- **Branch Management**: Completed deliverables saved and pushed to remote branch `milestone-1`.
