@@ -193,7 +193,7 @@ Backend  → Render
 
 ## 11. Learning Outcomes
 
-By the end of this project, students will understand:
+By the end of this project, you will understand:
 
 - How to plan a software project
 - How frontend and backend communicate
