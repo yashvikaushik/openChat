@@ -9,9 +9,9 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 
 // Fallback for SPA routing/direct access (redirects unrecognized paths to index.html)
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
