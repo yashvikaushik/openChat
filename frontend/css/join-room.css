@@ -139,22 +139,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  mix-blend-mode: multiply;
-  filter: drop-shadow(0 4px 8px rgba(116, 195, 101, 0.1));
-}
-
-/* Dark mode theme logo adaptation */
-:root[data-theme="dark"] .join-logo-container {
-  background: #ffffff;
-  border-radius: 50%;
-  padding: 8px;
-  box-shadow: var(--shadow-sm);
-  border: 2px solid var(--border-color);
-}
-
-:root[data-theme="dark"] .join-logo {
-  mix-blend-mode: normal;
-  filter: none;
+  filter: drop-shadow(0 4px 10px rgba(116, 195, 101, 0.2));
 }
 
 .join-header h2 {

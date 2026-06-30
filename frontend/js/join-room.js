@@ -1,8 +1,8 @@
-import { 
-  validateDisplayName, 
-  validateRoomName, 
-  showToast, 
-  setSessionItem 
+import {
+  validateDisplayName,
+  validateRoomName,
+  showToast,
+  setSessionItem
 } from './common.js';
 import { fetchRooms, createRoom } from './api.js';
 
@@ -17,9 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load rooms dynamically from API
   async function loadRoomsList() {
     try {
+      console.log("inside load roomsList")
       roomsRadioGroup.innerHTML = '<p style="font-size:0.85rem;color:var(--text-secondary);text-align:center;">Loading rooms...</p>';
       dbRooms = await fetchRooms();
-      
+
       if (dbRooms.length === 0) {
         roomsRadioGroup.innerHTML = '<p style="font-size:0.85rem;color:var(--text-muted);text-align:center;">No rooms available. Create a new one below!</p>';
         return;
@@ -29,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dbRooms.forEach((room, index) => {
         const optionLabel = document.createElement('label');
         optionLabel.className = 'room-radio-option';
-        
+
         // Mock online counts since Socket.io isn't integrated yet
         const mockOnline = {
           'General': 12,
@@ -102,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const displayName = displayNameInput.value.trim();
     const newRoomName = newRoomInput.value.trim();
-    
+
     let targetRoomId = '';
     let targetRoomName = '';
     let isNewRoom = false;
@@ -158,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
       setSessionItem('roomName', targetRoomName);
 
       showToast('Success!', `Joining room #${targetRoomName}...`, 'success');
-      
+
       setTimeout(() => {
         window.location.href = 'chat.html';
       }, 800);
