@@ -56,7 +56,7 @@
 
 /* System Dark Mode Override - mascot dark theme adaptation */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg-primary: #121824;
     --bg-card: #1B2433;
     --bg-alternate: #161D29;
@@ -70,6 +70,22 @@
     --scrollbar-thumb: #2D3A4F;
     --color-success-light: rgba(116, 195, 101, 0.1);
   }
+}
+
+/* Explicit Manual Dark Mode Override */
+:root[data-theme="dark"] {
+  --bg-primary: #121824;
+  --bg-card: #1B2433;
+  --bg-alternate: #161D29;
+  --border-color: #242F41;
+  --border-focus: #B8E84D;
+  
+  --text-primary: #F4F6F9;
+  --text-secondary: #BAC3CD;
+  --text-muted: #647385;
+  
+  --scrollbar-thumb: #2D3A4F;
+  --color-success-light: rgba(116, 195, 101, 0.1);
 }
 
 * {

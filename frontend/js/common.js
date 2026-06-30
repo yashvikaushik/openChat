@@ -116,3 +116,26 @@ export function clearSession() {
     console.error('SessionStorage clear error', e);
   }
 }
+
+// Theme management logic
+const initTheme = () => {
+  const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', savedTheme);
+};
+
+// Auto-run theme check on script execution to avoid UI flash
+initTheme();
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Bind click listener dynamically to handle theme toggles on any page
+  document.body.addEventListener('click', (e) => {
+    const toggleBtn = e.target.closest('#btn-theme-toggle');
+    if (toggleBtn) {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      showToast('Theme Updated', `Switched to ${newTheme} mode!`, 'success');
+    }
+  });
+});

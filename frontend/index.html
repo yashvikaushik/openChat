@@ -20,18 +20,21 @@
         <img class="app-logo" src="images/logo.png" alt="OpenChat Snail Logo">
         <h1 class="app-title">OpenChat</h1>
       </div>
-      <button type="button" class="mode-badge" id="btn-mode">
-        <span class="badge-icon">👤</span> Guest Mode
-      </button>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <button type="button" class="header-action-btn" id="btn-theme-toggle" title="Toggle Theme" aria-label="Toggle theme" style="border-radius: 50%; width: 36px; height: 36px; font-size: 1rem; border: 2px solid var(--border-color); background: var(--bg-card); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+          🌓
+        </button>
+        <button type="button" class="mode-badge" id="btn-mode">
+          <span class="badge-icon">👤</span> Guest Mode
+        </button>
+      </div>
     </header>
 
     <!-- Main Join Box -->
     <main class="join-box">
       <div class="join-header">
-        <div class="bubble-icon-container">
-          <svg class="bubble-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
-          </svg>
+        <div class="bubble-icon-container" style="background: transparent; border: none; box-shadow: none;">
+          <img src="images/logo.png" alt="OpenChat Mascot Logo" style="width: 100%; height: 100%; object-fit: contain;">
         </div>
         <h2>Join a Chat Room</h2>
         <p>Enter your details and join the conversation</p>
