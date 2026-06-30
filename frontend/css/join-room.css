@@ -191,6 +191,9 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 4px;
 }
 
 .room-radio-option {
@@ -329,3 +332,9 @@
   color: var(--text-secondary);
   opacity: 0.9;
 }
+
+/* Fix index.html body to scroll on small screens */
+body.join-page {
+  overflow-y: auto;
+}
+
