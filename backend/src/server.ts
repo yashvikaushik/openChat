@@ -4,9 +4,10 @@ import path from 'path';
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
 
+import http from 'http';
 import app from './app';
-
 import { connectDB } from './config/db';
+import { initializeSocket } from './config/socket';
 
 const PORT = process.env.PORT || 3000;
 console.log('Loaded MONGODB_URI:', process.env.MONGODB_URI);
@@ -17,7 +18,11 @@ const startServer = async () => {
     // Connect to Database and Seed rooms
     await connectDB();
 
-    app.listen(PORT, () => {
+    // Wrap Express app in HTTP server to enable Socket.IO connection handling
+    const httpServer = http.createServer(app);
+    initializeSocket(httpServer);
+
+    httpServer.listen(PORT, () => {
       console.log(`[Server] Running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
     });
   } catch (err) {

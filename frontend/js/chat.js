@@ -5,7 +5,17 @@ import {
   showToast,
   validateRoomName
 } from './common.js';
-import { fetchRooms, createRoom, fetchMessages, postMessage } from './api.js';
+import { fetchRooms, createRoom, fetchMessages } from './api.js';
+import {
+  connectSocket,
+  disconnectSocket,
+  joinRoom,
+  sendMessage,
+  listenForMessages,
+  listenForUserJoined,
+  listenForUserLeft,
+  listenForOnlineUsers
+} from './socket.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Session check
@@ -60,7 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load Rooms list dynamically
   async function loadRoomsSidebar() {
     try {
-      console.log("handling the rooms lke showing on the side bar of chats section");
       dbRooms = await fetchRooms();
       roomsListContainer.innerHTML = '';
 
@@ -71,8 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.setAttribute('data-id', room._id);
         btn.setAttribute('data-name', room.roomName);
 
-        // Predefined mockup mock numbers
-        console.log("showing hardcoded online members")
+        // Predefined mockup mock numbers fallback, will update dynamically on active room
         const mockOnline = {
           'General': 12,
           'JavaScript': 8,
@@ -85,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="room-prefix">#</span>
           <div class="room-details">
             <span class="room-nav-name">${room.roomName}</span>
-            <span class="room-member-count">${count} online</span>
+            <span class="room-member-count" id="sidebar-count-${room._id}">${count} online</span>
           </div>
         `;
         roomsListContainer.appendChild(btn);
@@ -96,22 +104,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Load chat messages from Database
+  // Load chat messages from Database (HTTP REST History fallback)
   async function loadActiveMessages() {
     try {
       messagesPanel.innerHTML = '<p style="font-size:0.85rem;color:var(--text-muted);text-align:center;padding:20px 0;">Loading messages...</p>';
 
       // Update Header Info
       activeRoomTitle.textContent = `# ${currentRoomName}`;
-      const mockOnline = {
-        'General': 12,
-        'JavaScript': 8,
-        'Movies': 5,
-        'Sports': 7
-      };
-      const count = mockOnline[currentRoomName] || 1;
-      activeRoomSubtitle.textContent = `${count} members online`;
-      headerMemberCount.textContent = count;
 
       const messages = await fetchMessages(currentRoomId);
       messagesPanel.innerHTML = '';
@@ -127,7 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       scrollToBottom();
-      console.log("scrolled to bottom");
     } catch (err) {
       console.error(err);
       messagesPanel.innerHTML = '<p style="font-size:0.85rem;color:var(--color-error);text-align:center;padding:20px 0;">Failed to load chat history.</p>';
@@ -169,12 +167,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Switch Room action
   function selectRoom(roomId, roomName) {
+    // 1. Leave the old socket room
+    disconnectSocket();
+
     currentRoomId = roomId;
     currentRoomName = roomName;
     setSessionItem('roomId', roomId);
     setSessionItem('roomName', roomName);
 
-    // Apply active class
+    // Apply active class in sidebar UI
     const buttons = roomsListContainer.querySelectorAll('.room-nav-item');
     buttons.forEach(btn => {
       if (btn.getAttribute('data-id') === roomId) {
@@ -184,7 +185,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // 2. Load old history logs
     loadActiveMessages();
+
+    // 3. Connect and Join the new socket room
+    connectSocket();
+    joinRoom(currentRoomId, username);
   }
 
   // Listen to sidebar room selection
@@ -193,31 +199,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btn) {
       const id = btn.getAttribute('data-id');
       const name = btn.getAttribute('data-name');
-      selectRoom(id, name);
+      if (id !== currentRoomId) {
+        selectRoom(id, name);
+      }
     }
   });
 
-  // Handle message submission
-  chatForm.addEventListener('submit', async (e) => {
+  // Handle message submission (Socket.IO event dispatch)
+  chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const text = messageInput.value.trim();
     if (!text) return;
 
-    try {
-      // POST message to API
-      const saved = await postMessage(currentRoomId, username, text);
+    // Send via socket connection
+    sendMessage(currentRoomId, username, text);
 
-      // Render returned message bubble
-      renderMessage(saved.username, saved.message, formatTime(saved.createdAt), true);
-
-      // Clear input text field
-      messageInput.value = '';
-      messageInput.style.height = 'auto';
-      scrollToBottom();
-    } catch (err) {
-      console.error(err);
-      showToast('Error', 'Failed to send message to database.', 'error');
-    }
+    // Clear input text field and restore height
+    messageInput.value = '';
+    messageInput.style.height = 'auto';
   });
 
   // Auto-grow textarea
@@ -276,6 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Leave action
   btnLeave.addEventListener('click', () => {
     if (confirm('Are you sure you want to leave the chat?')) {
+      disconnectSocket();
       showToast('Leaving...', 'Redirecting back to home.', 'success');
       setTimeout(() => {
         window.location.href = 'index.html';
@@ -292,10 +292,60 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast(isMuted ? 'Muted' : 'Unmuted', isMuted ? 'Notifications are muted' : 'Notifications are enabled', 'success');
   });
 
-  // Initialize
+  // Initialize Socket.IO connection and attach event listeners
+  function setupSocketListeners() {
+    connectSocket();
+
+    // Listen for incoming messages in the room
+    listenForMessages((msg) => {
+      if (msg.roomId === currentRoomId) {
+        const isOwn = msg.username === username;
+        renderMessage(msg.username, msg.message, formatTime(msg.createdAt), isOwn);
+        scrollToBottom();
+
+        // Play subtle sound if not own message and not muted
+        if (!isOwn && !isMuted) {
+          try {
+            const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2357/2357-84.wav');
+            audio.volume = 0.4;
+            audio.play().catch(() => {});
+          } catch (e) {}
+        }
+      }
+    });
+
+    // Listen for new user joins
+    listenForUserJoined((data) => {
+      renderNotification(data.message, 'notification-green');
+      scrollToBottom();
+    });
+
+    // Listen for user disconnects/leaves
+    listenForUserLeft((data) => {
+      renderNotification(data.message, 'notification-purple');
+      scrollToBottom();
+    });
+
+    // Listen for online users lists updates
+    listenForOnlineUsers((usernames) => {
+      activeRoomSubtitle.textContent = `${usernames.length} members online`;
+      headerMemberCount.textContent = usernames.length;
+      
+      const sidebarCount = document.getElementById(`sidebar-count-${currentRoomId}`);
+      if (sidebarCount) {
+        sidebarCount.textContent = `${usernames.length} online`;
+      }
+    });
+
+    // Join initial active room
+    joinRoom(currentRoomId, username);
+  }
+
+  // Initialize App Flow
   async function initializeApp() {
     await loadRoomsSidebar();
-    loadActiveMessages();
+    await loadActiveMessages();
+    setupSocketListeners();
   }
 
   initializeApp();
