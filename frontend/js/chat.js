@@ -17,19 +17,19 @@ import {
   listenForOnlineUsers
 } from './socket.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  // 1. Session check
-  const username = getSessionItem('username');
-  let currentRoomId = getSessionItem('roomId');
-  let currentRoomName = getSessionItem('roomName');
+// 1. Session check
+const username = getSessionItem('username');
+let currentRoomId = getSessionItem('roomId');
+let currentRoomName = getSessionItem('roomName');
 
-  if (!username || !currentRoomId || !currentRoomName) {
-    showToast('Unauthorized', 'Please join a room from the home screen.', 'error');
-    setTimeout(() => {
-      window.location.href = 'index.html';
-    }, 1000);
-    return;
-  }
+if (!username || !currentRoomId || !currentRoomName) {
+  showToast('Unauthorized', 'Please join a room from the home screen.', 'error');
+  setTimeout(() => {
+    window.location.href = 'index.html';
+  }, 1000);
+  // Return out of module execution by throwing or simply not executing further code
+  throw new Error('Unauthorized access redirecting to index.html');
+}
 
   // DOM Elements
   const currentUserAvatar = document.getElementById('current-user-avatar');
@@ -349,4 +349,3 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   initializeApp();
-});

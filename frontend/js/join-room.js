@@ -6,11 +6,10 @@ import {
 } from './common.js';
 import { fetchRooms, createRoom } from './api.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  const joinForm = document.getElementById('join-form');
-  const displayNameInput = document.getElementById('display-name');
-  const newRoomInput = document.getElementById('new-room-name');
-  const roomsRadioGroup = document.querySelector('.rooms-radio-group');
+const joinForm = document.getElementById('join-form');
+const displayNameInput = document.getElementById('display-name');
+const newRoomInput = document.getElementById('new-room-name');
+const roomsRadioGroup = document.querySelector('.rooms-radio-group');
 
   let dbRooms = [];
 
@@ -173,4 +172,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load initial list
   loadRoomsList();
-});
