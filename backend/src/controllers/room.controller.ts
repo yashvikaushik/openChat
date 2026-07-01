@@ -27,7 +27,7 @@ export class RoomController {
 
   static async createRoom(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      console.log("Controller create room")
+      console.log("Controller create room ke andar ")
       const { roomName } = req.body;
       if (!roomName || typeof roomName !== 'string') {
         res.status(400).json({ message: 'roomName is required' });
@@ -39,13 +39,14 @@ export class RoomController {
         res.status(400).json({ message: 'roomName must be between 3 and 30 characters' });
         return;
       }
-      console.log("going to check duplicate room")
+      console.log("going to check duplicate room by calling function of srvive layer")
       // Check duplicate
       const exists = await RoomService.roomExists(trimmedName);
       if (exists) {
         res.status(400).json({ message: 'Room already exists' });
         return;
       }
+      console.log("no duplicate room exists");
       console.log("now going inside service create room");
       const room = await RoomService.createRoom(trimmedName);
       console.log("after creating room in service")

@@ -6,6 +6,7 @@ export class RoomService {
   }
 
   static async getRoomById(id: string): Promise<RoomDocument | null> {
+    console.log("finding and returning the desired room");
     return RoomModel.findById(id);
   }
 

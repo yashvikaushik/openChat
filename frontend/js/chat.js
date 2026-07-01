@@ -1,7 +1,7 @@
-import { 
-  getSessionItem, 
-  setSessionItem, 
-  formatTime, 
+import {
+  getSessionItem,
+  setSessionItem,
+  formatTime,
   showToast,
   validateRoomName
 } from './common.js';
@@ -31,14 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const messagesPanel = document.getElementById('messages-panel');
   const chatForm = document.getElementById('chat-form');
   const messageInput = document.getElementById('message-input');
-  
+
   // Dialog Elements
   const createRoomTrigger = document.getElementById('btn-create-room-trigger');
   const roomDialog = document.getElementById('room-dialog');
   const dialogCreateForm = document.getElementById('dialog-create-form');
   const dialogRoomNameInput = document.getElementById('dialog-room-name');
   const btnDialogCancel = document.getElementById('btn-dialog-cancel');
-  
+
   const btnLeave = document.getElementById('btn-leave');
   const btnMute = document.getElementById('btn-mute');
 
@@ -60,9 +60,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load Rooms list dynamically
   async function loadRoomsSidebar() {
     try {
+      console.log("handling the rooms lke showing on the side bar of chats section");
       dbRooms = await fetchRooms();
       roomsListContainer.innerHTML = '';
-      
+
       dbRooms.forEach(room => {
         const btn = document.createElement('button');
         const isActive = room._id === currentRoomId;
@@ -71,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.setAttribute('data-name', room.roomName);
 
         // Predefined mockup mock numbers
+        console.log("showing hardcoded online members")
         const mockOnline = {
           'General': 12,
           'JavaScript': 8,
@@ -98,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadActiveMessages() {
     try {
       messagesPanel.innerHTML = '<p style="font-size:0.85rem;color:var(--text-muted);text-align:center;padding:20px 0;">Loading messages...</p>';
-      
+
       // Update Header Info
       activeRoomTitle.textContent = `# ${currentRoomName}`;
       const mockOnline = {
@@ -125,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       scrollToBottom();
+      console.log("scrolled to bottom");
     } catch (err) {
       console.error(err);
       messagesPanel.innerHTML = '<p style="font-size:0.85rem;color:var(--color-error);text-align:center;padding:20px 0;">Failed to load chat history.</p>';
@@ -145,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const msgDiv = document.createElement('div');
     msgDiv.className = `message-item ${isOwn ? 'own-message' : ''}`;
     const initials = getInitials(sender);
-    
+
     msgDiv.innerHTML = `
       <div class="message-avatar">${initials}</div>
       <div class="message-content-wrapper">
@@ -203,10 +206,10 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       // POST message to API
       const saved = await postMessage(currentRoomId, username, text);
-      
+
       // Render returned message bubble
       renderMessage(saved.username, saved.message, formatTime(saved.createdAt), true);
-      
+
       // Clear input text field
       messageInput.value = '';
       messageInput.style.height = 'auto';
@@ -254,10 +257,10 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       showToast('Creating...', 'Registering new room...', 'success');
       const room = await createRoom(name);
-      
+
       // Reload sidebar
       await loadRoomsSidebar();
-      
+
       roomDialog.close();
       dialogRoomNameInput.value = '';
 

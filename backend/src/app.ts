@@ -9,11 +9,15 @@ import messageRoutes from './routes/message.routes';
 
 const app = express();
 
+console.log("inside app.ts file ");
+
 // Global Middlewares
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(loggerMiddleware);
+
+console.log("global middlewares have been set up");
 
 // Serve Frontend Static Files
 app.use(express.static(path.join(__dirname, '../../frontend')));

@@ -3,7 +3,9 @@ import path from 'path';
 // Load environment variables first
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
+
 import app from './app';
+
 import { connectDB } from './config/db';
 
 const PORT = process.env.PORT || 3000;
@@ -11,6 +13,7 @@ console.log('Loaded MONGODB_URI:', process.env.MONGODB_URI);
 
 const startServer = async () => {
   try {
+    console.log("server initialization started");
     // Connect to Database and Seed rooms
     await connectDB();
 

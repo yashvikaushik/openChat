@@ -1,7 +1,7 @@
 import { Schema, model, Document } from 'mongoose';
 import { IRoom } from '../types/room.types';
 
-export interface RoomDocument extends Omit<IRoom, '_id'>, Document {}
+export interface RoomDocument extends Omit<IRoom, '_id'>, Document { }
 
 const roomSchema = new Schema<RoomDocument>({
   roomName: {
@@ -17,6 +17,8 @@ const roomSchema = new Schema<RoomDocument>({
     default: Date.now
   }
 });
+
+console.log("going for the database now");
 
 export const RoomModel = model<RoomDocument>('Room', roomSchema);
 export default RoomModel;
