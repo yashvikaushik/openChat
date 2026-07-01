@@ -9,13 +9,18 @@ export const joinRoom = (socket: Socket, io: SocketIOServer, payload: JoinRoomPa
     return;
   }
 
+  console.log("socket is about to join a room");
+
   // Join the Socket.IO virtual room
   socket.join(roomId);
+
+  console.log(socket.id+"joined the room with id: ",roomId,"successfully");
 
   // Register in memory map
   SocketService.joinUser(socket.id, username, roomId);
 
   // Broadcast system notice to other room members
+  console.log("broadcasting user joined event to room with id:",roomId);
   socket.to(roomId).emit('user-joined', {
     username,
     message: `${username} has joined the room`,

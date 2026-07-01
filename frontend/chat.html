@@ -157,6 +157,20 @@
     </div>
   </dialog>
 
+  <!-- Members List Dialog Modal -->
+  <dialog class="room-dialog" id="members-dialog">
+    <div class="dialog-card">
+      <h2>Online Members</h2>
+      <p>Users currently active in this room</p>
+      <div id="members-list-container" style="max-height: 240px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; padding: 4px;">
+        <!-- Dynamically populated with active members -->
+      </div>
+      <div class="dialog-actions">
+        <button type="button" class="btn-secondary" id="btn-members-close" style="width: 100%; border-radius: var(--radius-xl);">Close</button>
+      </div>
+    </div>
+  </dialog>
+
   <script src="/socket.io/socket.io.js"></script>
   <script type="module" src="js/common.js"></script>
   <script type="module" src="js/chat.js"></script>

@@ -20,7 +20,9 @@ const startServer = async () => {
 
     // Wrap Express app in HTTP server to enable Socket.IO connection handling
     const httpServer = http.createServer(app);
+
     initializeSocket(httpServer);
+    console.log("socket connected with http server successfuly");
 
     httpServer.listen(PORT, () => {
       console.log(`[Server] Running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);

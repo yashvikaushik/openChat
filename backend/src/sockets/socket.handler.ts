@@ -8,6 +8,7 @@ export const handleConnection = (socket: Socket, io: SocketIOServer): void => {
 
   // Register join-room listener
   socket.on('join-room', (payload: JoinRoomPayload) => {
+    console.log("now going to join room handler of socket");
     joinRoom(socket, io, payload);
   });
 

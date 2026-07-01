@@ -13,7 +13,9 @@ export const initializeSocket = (httpServer: HttpServer): SocketIOServer => {
   });
 
   io.on('connection', (socket) => {
+    console.log("connecting the client");
     handleConnection(socket, io!);
+    console.log("somebody entered the server with id: ",socket.id);
   });
 
   console.log('[Socket.IO] Server initialized successfully.');

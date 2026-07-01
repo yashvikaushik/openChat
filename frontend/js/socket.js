@@ -29,6 +29,7 @@ export const disconnectSocket = () => {
 export const joinRoom = (roomId, username) => {
   if (socket) {
     socket.emit('join-room', { roomId, username });
+    console.log("client has enered and joined the room");
     console.log(`[SocketClient] Emitted join-room for room: ${roomId}`);
   }
 };

@@ -49,6 +49,12 @@ if (!username || !currentRoomId || !currentRoomName) {
   const dialogRoomNameInput = document.getElementById('dialog-room-name');
   const btnDialogCancel = document.getElementById('btn-dialog-cancel');
 
+  // Members Dialog
+  const membersDialog = document.getElementById('members-dialog');
+  const btnMembersClose = document.getElementById('btn-members-close');
+  const btnViewMembers = document.querySelector('[title="View Members"]');
+  const membersListContainer = document.getElementById('members-list-container');
+
   const btnLeave = document.getElementById('btn-leave');
   const btnMute = document.getElementById('btn-mute');
 
@@ -167,8 +173,11 @@ if (!username || !currentRoomId || !currentRoomName) {
 
   // Switch Room action
   function selectRoom(roomId, roomName) {
-    // 1. Leave the old socket room
-    disconnectSocket();
+    // 1. Tell server we are leaving the current room
+    const socket = connectSocket();
+    if (socket) {
+      socket.emit('leave-room');
+    }
 
     currentRoomId = roomId;
     currentRoomName = roomName;
@@ -188,8 +197,7 @@ if (!username || !currentRoomId || !currentRoomName) {
     // 2. Load old history logs
     loadActiveMessages();
 
-    // 3. Connect and Join the new socket room
-    connectSocket();
+    // 3. Join the new socket room (reuses existing socket connection with listeners intact)
     joinRoom(currentRoomId, username);
   }
 
@@ -276,6 +284,9 @@ if (!username || !currentRoomId || !currentRoomName) {
   btnLeave.addEventListener('click', () => {
     if (confirm('Are you sure you want to leave the chat?')) {
       disconnectSocket();
+      sessionStorage.removeItem('username');
+      sessionStorage.removeItem('roomId');
+      sessionStorage.removeItem('roomName');
       showToast('Leaving...', 'Redirecting back to home.', 'success');
       setTimeout(() => {
         window.location.href = 'index.html';
@@ -295,6 +306,16 @@ if (!username || !currentRoomId || !currentRoomName) {
   // Initialize Socket.IO connection and attach event listeners
   function setupSocketListeners() {
     connectSocket();
+
+    // Bind Members Dialog open/close triggers
+    if (btnViewMembers && membersDialog && btnMembersClose) {
+      btnViewMembers.addEventListener('click', () => {
+        membersDialog.showModal();
+      });
+      btnMembersClose.addEventListener('click', () => {
+        membersDialog.close();
+      });
+    }
 
     // Listen for incoming messages in the room
     listenForMessages((msg) => {
@@ -334,6 +355,27 @@ if (!username || !currentRoomId || !currentRoomName) {
       const sidebarCount = document.getElementById(`sidebar-count-${currentRoomId}`);
       if (sidebarCount) {
         sidebarCount.textContent = `${usernames.length} online`;
+      }
+
+      // Populate Members Modal content dynamically
+      if (membersListContainer) {
+        membersListContainer.innerHTML = '';
+        usernames.forEach(name => {
+          const userDiv = document.createElement('div');
+          userDiv.style.display = 'flex';
+          userDiv.style.alignItems = 'center';
+          userDiv.style.gap = '10px';
+          userDiv.style.padding = '8px 12px';
+          userDiv.style.borderRadius = '8px';
+          userDiv.style.background = 'var(--bg-alternate)';
+          userDiv.style.color = 'var(--text-primary)';
+          userDiv.style.fontWeight = '600';
+          userDiv.innerHTML = `
+            <span class="status-dot" style="width: 8px; height: 8px; border-radius: 50%; background: var(--color-success); box-shadow: 0 0 8px var(--color-success);"></span>
+            <span>${name}</span>
+          `;
+          membersListContainer.appendChild(userDiv);
+        });
       }
     });
 
