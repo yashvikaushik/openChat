@@ -382,7 +382,7 @@
 .message-body {
   font-size: 0.95rem;
   color: var(--text-primary);
-  background: #ffffff;
+  background: var(--bg-card);
   border: 2px solid var(--border-color);
   border-left: 5px solid var(--color-medium-green); /* soft green accent */
   border-radius: 0 var(--radius-md) var(--radius-md) var(--radius-md);
