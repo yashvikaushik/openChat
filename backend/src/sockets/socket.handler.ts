@@ -1,11 +1,9 @@
-import { Socket } from 'socket.io';
-import { getIO } from '../config/socket';
+import { Socket, Server as SocketIOServer } from 'socket.io';
 import { joinRoom, leaveRoom, handleUserLeave } from './room.handler';
 import { sendMessage } from './message.handler';
 import { JoinRoomPayload, SendMessagePayload } from '../types/socket.types';
 
-export const handleConnection = (socket: Socket): void => {
-  const io = getIO();
+export const handleConnection = (socket: Socket, io: SocketIOServer): void => {
   console.log(`[Socket.IO] Client connected: ${socket.id}`);
 
   // Register join-room listener

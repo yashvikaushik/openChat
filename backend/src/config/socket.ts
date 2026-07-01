@@ -13,7 +13,7 @@ export const initializeSocket = (httpServer: HttpServer): SocketIOServer => {
   });
 
   io.on('connection', (socket) => {
-    handleConnection(socket);
+    handleConnection(socket, io!);
   });
 
   console.log('[Socket.IO] Server initialized successfully.');
