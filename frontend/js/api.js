@@ -9,6 +9,7 @@ const BASE_URL = ''; // Same origin requests
  * @returns {Promise<Array>}
  */
 export async function fetchRooms() {
+  console.log("api.js se call hua hu basically this file is used to send or receive data")
   const res = await fetch(`${BASE_URL}/api/rooms`);
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
@@ -32,7 +33,9 @@ export async function createRoom(roomName) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || 'Failed to create room');
   }
-  return res.json();
+  const data = await res.json();
+  console.log(data);
+  return data;
 }
 
 /**

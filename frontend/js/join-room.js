@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       console.log("inside load roomsList")
       roomsRadioGroup.innerHTML = '<p style="font-size:0.85rem;color:var(--text-secondary);text-align:center;">Loading rooms...</p>';
+      console.log("join room.js mai fetch room ke call hone se pehle");
       dbRooms = await fetchRooms();
 
       if (dbRooms.length === 0) {
